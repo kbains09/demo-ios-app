@@ -38,6 +38,7 @@ struct ContentView: View {
         ZStack {
             backgroundColor // Set the background color
             
+            
             VStack {
                 Text(randomEmoji)
                     .font(.system(size: 100)) // Set the font size for the emoji
@@ -49,9 +50,6 @@ struct ContentView: View {
                             generateRandomEmoji()
                         }
                     }
-
-                
-                Spacer() // Add space between emoji and quote
                 
                 Text(randomQuote)
                     .font(.subheadline)
@@ -61,7 +59,6 @@ struct ContentView: View {
                     .lineLimit(3) // Limit to 3 lines of text
                     .foregroundColor(Color.secondary)
                 
-                Spacer() // Add space between quote and button
                 
                 Button("Generate Random Emoji") {
                     // Generate a random index to select an emoji and quote from the arrays
@@ -77,8 +74,7 @@ struct ContentView: View {
                 }
                 .font(.headline)
                 .padding()
-                
-                Spacer() // Add space after the button
+
             }
             .padding() // Add padding around the entire VStack
         }
