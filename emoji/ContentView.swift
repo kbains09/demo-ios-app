@@ -6,8 +6,13 @@
 //
 
 import SwiftUI
+import AVFoundation
 
 struct ContentView: View {
+    @State private var emojiScale: CGFloat = 1.0
+    @State private var emojiRotation: Angle = .degrees(0)
+    @State private var audioPlayer: AVAudioPlayer?
+    
     // Define an array of emojis and positive quotes
     let emojis = ["😀", "😎", "🚀", "🌟", "🐱", "🌈", "🍔", "🎉"]
     let positiveQuotes = [
@@ -18,7 +23,9 @@ struct ContentView: View {
         "You've got this!",
         "Shine bright like a star!",
         "Life is beautiful.",
-        "Success is a journey, not a destination."
+        "Success is a journey, not a destination.",
+        "Stop being a bitch.",
+        "Gym time pussy.",
     ]
     
     // State variables
@@ -31,8 +38,16 @@ struct ContentView: View {
             backgroundColor // Set the background color
             
             VStack {
-                Text(randomEmoji)
-                    .font(.system(size: 50))
+                Image(systemName: "globe")
+                    .imageScale(.large)
+                    .foregroundStyle(.tint)
+                    .scaleEffect(emojiScale) // Apply scaling
+                    .rotationEffect(emojiRotation) // Apply rotation
+                    .onTapGesture {
+                        // Call a function to generate a random emoji, trigger animations, and play a sound effect
+                        generateRandomEmoji()
+                    }
+                    .animation(.easeInOut(duration: 0.5)) // Add animation with default duration
                 
                 Text(randomQuote)
                     .font(.subheadline)
@@ -50,12 +65,46 @@ struct ContentView: View {
                     
                     // Change the background color to a random color
                     backgroundColor = Color.random
+                    
+                    // Play a sound effect
+                    playSoundEffect()
                 }
                 .font(.headline)
                 .padding()
             }
         }
         .ignoresSafeArea()
+    }
+
+    // Function to generate a random emoji, trigger animations, and play a sound effect
+    func generateRandomEmoji() {
+        // Add your logic to generate a random emoji
+        
+        // Animate the scaling and rotation
+        withAnimation(.easeInOut(duration: 0.5)) {
+            emojiScale = 1.2
+            emojiRotation = .degrees(360)
+        }
+        
+        // Reset the scaling and rotation after a delay
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            withAnimation(.easeInOut(duration: 0.5)) {
+                emojiScale = 1.0
+                emojiRotation = .degrees(0)
+            }
+        }
+    }
+    
+    // Function to play a sound effect
+    func playSoundEffect() {
+        if let soundURL = Bundle.main.url(forResource: "sound", withExtension: "mp3") {
+            do {
+                audioPlayer = try AVAudioPlayer(contentsOf: soundURL)
+                audioPlayer?.play()
+            } catch {
+                print("Error playing sound: \(error.localizedDescription)")
+            }
+        }
     }
 }
 
