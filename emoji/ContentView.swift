@@ -33,21 +33,25 @@ struct ContentView: View {
     @State private var randomQuote = ""
     @State private var backgroundColor = Color.white // Initial background color
     
+    
     var body: some View {
         ZStack {
             backgroundColor // Set the background color
             
             VStack {
-                Image(systemName: "globe")
-                    .imageScale(.large)
-                    .foregroundStyle(.tint)
-                    .scaleEffect(emojiScale) // Apply scaling
-                    .rotationEffect(emojiRotation) // Apply rotation
+                Text(randomEmoji)
+                    .font(.system(size: 100)) // Set the font size for the emoji
+                    .scaleEffect(emojiScale)
+                    .rotationEffect(emojiRotation)
                     .onTapGesture {
                         // Call a function to generate a random emoji, trigger animations, and play a sound effect
-                        generateRandomEmoji()
+                        withAnimation(.easeInOut(duration: 0.5)) {
+                            generateRandomEmoji()
+                        }
                     }
-                    .animation(.easeInOut(duration: 0.5)) // Add animation with default duration
+
+                
+                Spacer() // Add space between emoji and quote
                 
                 Text(randomQuote)
                     .font(.subheadline)
@@ -56,6 +60,8 @@ struct ContentView: View {
                     .frame(maxWidth: .infinity, alignment: .center)
                     .lineLimit(3) // Limit to 3 lines of text
                     .foregroundColor(Color.secondary)
+                
+                Spacer() // Add space between quote and button
                 
                 Button("Generate Random Emoji") {
                     // Generate a random index to select an emoji and quote from the arrays
@@ -71,7 +77,10 @@ struct ContentView: View {
                 }
                 .font(.headline)
                 .padding()
+                
+                Spacer() // Add space after the button
             }
+            .padding() // Add padding around the entire VStack
         }
         .ignoresSafeArea()
     }
